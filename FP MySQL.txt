@@ -155,7 +155,24 @@ ___________________________________________________________________
 
 Завдання 4
 ---------------------------------------
-
+Після зауважень:
+ALTER TABLE infectious_cases_normalized
+ADD COLUMN start_of_year DATE,
+ADD COLUMN today_date DATE,
+ADD COLUMN diff_years INT;
+UPDATE infectious_cases_normalized
+SET start_of_year = STR_TO_DATE(CONCAT(year, '-01-01'), '%Y-%m-%d'),
+    today_date = CURDATE(),
+    diff_years = TIMESTAMPDIFF(
+        YEAR,
+        STR_TO_DATE(CONCAT(year, '-01-01'), '%Y-%m-%d'),
+        CURDATE()
+    );
+SELECT year, start_of_year, today_date, diff_years
+FROM infectious_cases_normalized
+LIMIT 20;
+---------------------------------------------------------------------
+Залишив для себе
 SELECT 
     ic.Year,
      STR_TO_DATE(CONCAT(ic.Year, '-01-01'), '%Y-%m-%d') AS start_of_year,
@@ -167,7 +184,7 @@ SELECT
     ) AS diff_years
 FROM infectious_cases ic
 LIMIT 20;
-
+----------------------------------------------------------------------
 SELECT 
     ic.year,
     STR_TO_DATE(CONCAT(ic.year, '-01-01'), '%Y-%m-%d') AS start_of_year,
